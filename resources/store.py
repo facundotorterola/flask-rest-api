@@ -1,12 +1,13 @@
 from flask import request
 from flask.views import MethodView
-from flask_smorest import Blueprint, abort
-from db_local import stores
-from models.store import StoreModel
-from schemas import StoreSchema
-from db import db
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from flask_jwt_extended import jwt_required
+from flask_smorest import Blueprint, abort
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+
+from db import db
+from db_local import stores
+from models import StoreModel
+from schemas import StoreSchema
 
 blp = Blueprint("stores", __name__, description="Stores")
 

@@ -1,14 +1,11 @@
-from flask import request
 from flask.views import MethodView
-from flask_smorest import Blueprint, abort
-from db_local import stores
-from models.store import StoreModel
-from models.tag import TagModel
-from models.item import ItemModel
-from schemas import PlainTagSchema, TagSchema
-from db import db
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from flask_jwt_extended import jwt_required
+from flask_smorest import Blueprint, abort
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+
+from db import db
+from models import ItemModel, StoreModel, TagModel
+from schemas import PlainTagSchema, TagSchema
 
 blp = Blueprint("tags", __name__, description="Tags")
 

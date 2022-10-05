@@ -1,19 +1,17 @@
-from flask import Flask
 import os
+
+from flask import Flask
+from flask_jwt_extended import JWTManager
+from flask_migrate import Migrate
+from flask_smorest import Api
+
+import models
+from blocklist import BLOCKLIST
+from db import db
 from resources.item import blp as ItemBluePrint
 from resources.store import blp as StoreBluePrint
 from resources.tag import blp as TagBluePrint
 from resources.user import blp as UserBluePrint
-from flask_smorest import Api
-from db import db
-from models.item import ItemModel
-from models.store import StoreModel
-from models.tag import TagModel
-from models.item_tags import ItemTags
-from models.user import UserModel
-
-from flask_jwt_extended import JWTManager
-from blocklist import BLOCKLIST
 
 
 def create_app():
@@ -33,8 +31,8 @@ def create_app():
     )
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.init_app(app)
+    migrate = Migrate(app, db)
     api = Api(app)
-
     app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
     jwt = JWTManager(app)
 
@@ -52,7 +50,7 @@ def create_app():
 
     @jwt.additional_claims_loader
     def add_claims_to_access_token(identity):
-        user = UserModel.query.get(identity)
+        user = models.UserModel.query.get(identity)
         if user.username == "admin":
             return {"is_admin": True}
         return {"is_admin": False}

@@ -1,10 +1,11 @@
 from flask.views import MethodView
+from flask_jwt_extended import get_jwt, jwt_required
 from flask_smorest import Blueprint, abort
-from models.item import ItemModel
-from schemas import ItemSchema, ItemUpdateSchema
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+
 from db import db
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
-from flask_jwt_extended import jwt_required, get_jwt
+from models import ItemModel
+from schemas import ItemSchema, ItemUpdateSchema
 
 blp = Blueprint("items", __name__, description="Items")
 
